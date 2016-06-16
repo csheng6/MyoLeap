@@ -327,7 +327,7 @@ int main(int argc, char** argv)
 		// Next we construct an instance of our DeviceListener, so that we can register it with the Hub.
 		DataCollector collector;
 		double timeElasped = 0.000;
-		const double minMax[10] = { 35.72, 78.86, 38.52, 93.48, 37.93, 99.27, 34.62, 92.53, 31.11, 84.09 }; //T.I.M.R.P
+		const double minMax[10] = { 32, 85, 36, 100, 37, 107, 36, 100, 36, 90 }; //T.I.M.R.P
 
 		// Hub::addListener() takes the address of any object whose class inherits from DeviceListener, and will cause
 		// Hub::run() to send events to all registered device listeners.
@@ -348,7 +348,8 @@ int main(int argc, char** argv)
 			// After processing events, we call the print() member function we defined above to print out the values we've
 			// obtained from any events that have occurred.
 			collector.print();
-			
+			int i = 0;
+			int j = 1;
 			const Frame frame = controller.frame();
 			HandList hands = frame.hands();
 			for (HandList::const_iterator hl = hands.begin(); hl != hands.end(); ++hl) {
@@ -356,18 +357,20 @@ int main(int argc, char** argv)
 				const Hand hand = *hl;
 				// Get fingers
 				const FingerList fingers = hand.fingers();
-				int i = 0;
+				
 				for (FingerList::const_iterator fl = fingers.begin(); fl != fingers.end(); ++fl) {
 					const Finger finger = *fl;
 
 					myfile << std::string(4, ' ') << fingerNames[finger.type()]
 						<< ": " << hand.palmPosition().distanceTo(finger.tipPosition());
 					myfile << std::string(4, ' ') << fingerNames[finger.type()]
-						<< ": " << listener.mapping(hand.palmPosition().distanceTo(finger.tipPosition()), minMax[i], minMax[i + 1]);
+						<< ": " << listener.mapping(hand.palmPosition().distanceTo(finger.tipPosition()), minMax[i + i], minMax[i + j]);
 					i++;
-						if (i = 9)
+					j++;
+						if (i == 5 && j == 6)
 						{
 							i = 0;
+							j = 1;
 						}
 				}
 			}
